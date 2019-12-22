@@ -27,6 +27,7 @@ if [ ! -n "${BULLETTRAIN_PROMPT_ORDER+1}" ]; then
     perl
     ruby
     virtualenv
+    pipenv
     nvm
     aws
     go
@@ -94,6 +95,17 @@ if [ ! -n "${BULLETTRAIN_VIRTUALENV_FG+1}" ]; then
 fi
 if [ ! -n "${BULLETTRAIN_VIRTUALENV_PREFIX+1}" ]; then
   BULLETTRAIN_VIRTUALENV_PREFIX=🐍
+fi
+
+# PIPENV
+if [ ! -n "${BULLETTRAIN_PIPENV_BG+1}" ]; then
+  BULLETTRAIN_PIPENV_BG=yellow
+fi
+if [ ! -n "${BULLETTRAIN_PIPENV_FG+1}" ]; then
+  BULLETTRAIN_PIPENV_FG=white
+fi
+if [ ! -n "${BULLETTRAIN_PIPENV_PREFIX+1}" ]; then
+  BULLETTRAIN_PIPENV_PREFIX=
 fi
 
 # NVM
@@ -580,6 +592,16 @@ prompt_virtualenv() {
   elif which pyenv &> /dev/null; then
     if [[ "$(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')" != "system" ]]; then
       prompt_segment $BULLETTRAIN_VIRTUALENV_BG $BULLETTRAIN_VIRTUALENV_FG $BULLETTRAIN_VIRTUALENV_PREFIX" $(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')"
+    fi
+  fi
+}
+
+# Pipenv: current working pipenv
+prompt_pipenv() {
+  if which pipenv &> /dev/null; then
+    venv_path="$(pipenv --venv 2> /dev/null)"
+    if [ ! -z "$venv_path" ]; then
+      prompt_segment $BULLETTRAIN_PIPENV_BG $BULLETTRAIN_PIPENV_FG $BULLETTRAIN_PIPENV_PREFIX" $(basename $venv_path | sed 's/\(.*\)-.*/\1/')"
     fi
   fi
 }
