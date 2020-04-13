@@ -598,10 +598,10 @@ prompt_virtualenv() {
 
 # Pipenv: current working pipenv
 prompt_pipenv() {
-    if (( $+commands[pipenv] )) && (( $+commands[python] )); then
+  if (( $+commands[pipenv] )) && (( $+commands[python] )); then
     venv_path="$(pipenv --venv 2> /dev/null)"
     venv_active=$(python -c 'import sys; sys.stdout.write("1" if hasattr(sys, "real_prefix") else "0")')
-    if [[ ! -z "${venv_path}" ]] && [[ ${venv_active} -eq 2 ]]; then
+    if [[ ! -z "${venv_path}" ]] && [[ ${venv_active} -eq 1 ]]; then
       prompt_segment $BULLETTRAIN_PIPENV_BG $BULLETTRAIN_PIPENV_FG $BULLETTRAIN_PIPENV_PREFIX" $(basename ${venv_path} | sed 's/\(.*\)-.*/\1/')"
     fi
   fi
